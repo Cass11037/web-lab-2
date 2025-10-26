@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'war'
 }
 
 group = 'ru.itmo.sludnaya'
@@ -10,8 +11,11 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.0.0'
+
+    // ЭТА СТРОКА ОСТАЕТСЯ, ОНА НУЖНА ДЛЯ JSTL:
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0'
 }
 
 test {
