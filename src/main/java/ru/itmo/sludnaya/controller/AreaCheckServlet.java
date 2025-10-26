@@ -41,18 +41,16 @@ public class AreaCheckServlet extends HttpServlet {
 
         }
         catch (NumberFormatException | NullPointerException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Ошибка: один или несколько параметров некорректны.");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error: all or any param arent correct");
         }
     }
     private boolean checkHit(double x, double y, double r) {
         if (x >= 0 && y >= 0 && x <= r && y <= r / 2) {
             return true;
         }
-        // Треугольник (правый нижний)
-        if (x >= 0 && y <= 0 && y >= (x/2 - r/2)) { // Уточнил формулу для треугольника
+        if (x >= 0 && y <= 0 && y >= (x/2 - r/2)) {
             return true;
         }
-        // Четверть круга (левый нижний)
         if (x <= 0 && y <= 0 && (x * x + y * y <= r * r)) {
             return true;
         }

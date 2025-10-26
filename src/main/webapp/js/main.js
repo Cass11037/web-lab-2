@@ -1,4 +1,5 @@
 "use strict";
+
 const canvas = document.getElementById("plot-canvas");
 const ctx = canvas.getContext("2d");
 const form = document.getElementById("coordinates-form");
@@ -16,12 +17,11 @@ xButtons.forEach((button) => {
     });
 });
 
-
 canvas.addEventListener("click", (event) => {
     hideError();
     const rValue = parseFloat(rSelect.value);
     if (isNaN(rValue)) {
-        showError("Невозможно определить координаты: радиус R не установлен!");
+        showError("Cannot determine coordinates: Radius R is not set!");
         return;
     }
     const rect = canvas.getBoundingClientRect();
@@ -41,9 +41,7 @@ canvas.addEventListener("click", (event) => {
     form.submit();
 });
 
-
 form.addEventListener("submit", (event) => {
-
     const errorMessage = validateAllFields();
     if (errorMessage) {
         event.preventDefault();
@@ -52,7 +50,6 @@ form.addEventListener("submit", (event) => {
         hideError();
     }
 });
-
 
 rSelect.addEventListener("change", () => {
     const rValue = parseFloat(rSelect.value);
@@ -64,19 +61,19 @@ rSelect.addEventListener("change", () => {
 
 function validateAllFields() {
     const xValue = hiddenXInput.value;
-    if (xValue === "") { return "Пожалуйста, выберите значение X."; }
+    if (xValue === "") { return "Please select an X value."; }
 
     const yValueStr = yInput.value.trim().replace(",", ".");
-    if (yValueStr === "") { return "Пожалуйста, введите значение Y."; }
-    if (isNaN(yValueStr)) { return "Значение Y должно быть числом."; }
+    if (yValueStr === "") { return "Please enter a Y value."; }
+    if (isNaN(yValueStr)) { return "The Y value must be a number."; }
 
     const yNum = parseFloat(yValueStr);
     if (yNum <= -5 || yNum >= 3) {
-        return "Значение Y должно быть в интервале (-5 ... 3).";
+        return "The Y value must be in the interval (-5 ... 3).";
     }
 
     const rValue = rSelect.value;
-    if (rValue === "") { return "Пожалуйста, выберите значение R."; }
+    if (rValue === "") { return "Please select an R value."; }
 
     return null;
 }
@@ -114,16 +111,16 @@ function drawPlot(r) {
     ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(0, centerY); ctx.lineTo(width, centerY);
-    ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height);
+    ctx.moveTo(0, centerY); ctx.lineTo(width, centerY); // X-axis
+    ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height); // Y-axis
     ctx.stroke();
 
     ctx.fillStyle = "black";
     const labels = [`-${r}`, `-${r/2}`, `${r/2}`, `${r}`];
     const positions = [-r_pixels, -r_pixels / 2, r_pixels / 2, r_pixels];
     positions.forEach((pos, i) => {
-        ctx.fillText(labels[i], centerX + pos - 5, centerY - 5);
-        ctx.fillText(labels[i], centerX + 5, centerY - pos + 3);
+        ctx.fillText(labels[i], centerX + pos - 5, centerY - 5); // X-axis labels
+        ctx.fillText(labels[i], centerX + 5, centerY - pos + 3); // Y-axis labels
     });
 }
 
@@ -140,7 +137,6 @@ function drawPoint(x, y, r, isHit) {
     ctx.arc(canvasX, canvasY, 4, 0, 2 * Math.PI);
     ctx.fill();
 }
-
 
 function redrawPoints(currentR) {
     if (typeof historyPoints !== 'undefined' && historyPoints) {
@@ -161,7 +157,6 @@ function hideError() {
     errorContainer.style.display = "none";
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const initialR = parseFloat(rSelect.value);
     if (!isNaN(initialR)) {
@@ -173,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function drawPlotWithTextLabels() {
-
     const width = canvas.width;
     const height = canvas.height;
     const centerX = width / 2;
@@ -209,7 +203,6 @@ function drawPlotWithTextLabels() {
     ctx.moveTo(0, centerY); ctx.lineTo(width, centerY);
     ctx.moveTo(centerX, 0); ctx.lineTo(centerX, height);
     ctx.stroke();
-
 
     ctx.fillStyle = "black";
     const labels = ["-R", "-R/2", "R/2", "R"];
