@@ -324,7 +324,7 @@
                             <td><c:out value="${result.x}"/></td>
                             <td><c:out value="${result.y}"/></td>
                             <td><c:out value="${result.r}"/></td>
-                            <td>${result.hit ? "Попадание" : "Промах"}</td>
+                            <td>${result.hit ? "Hit" : "Miss"}</td>
                             <td><c:out value="${result.formattedTimestamp}"/></td>
                         </tr>
                     </c:forEach>

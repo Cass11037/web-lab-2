@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Результат Проверки</title>
+    <title>Check Result</title>
     <style>
       body {
         margin: 0;
@@ -112,7 +112,7 @@
 
     <main>
         <div class="container-main">
-            <h2>Результат Вашей проверки</h2>
+            <h2>Your Check Result</h2>
 
             <table class="param-table">
                 <tbody>
@@ -131,20 +131,20 @@
                 </tbody>
             </table>
 
-            <%-- Динамически подставляем класс для цвета фона --%>
+            <%-- Dynamically set the class for the background color --%>
             <div class="result-message ${requestScope.currentResult.hit ? 'result-hit' : 'result-miss'}">
                 <c:choose>
                     <c:when test="${requestScope.currentResult.hit}">
-                        Попадание!
+                        Hit!
                     </c:when>
                     <c:otherwise>
-                        Промах!
+                        Miss!
                     </c:otherwise>
                 </c:choose>
             </div>
 
             <div class="back-link-container">
-                <a class="back-link" href="${pageContext.request.contextPath}/">Вернуться на главную</a>
+                <a class="back-link" href="${pageContext.request.contextPath}/">Back to Main Page</a>
             </div>
         </div>
     </main>
