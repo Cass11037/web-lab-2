@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +10,7 @@
   <body>
     <header class="page-header">
       <h1 class="header-title">Sludnaya Victoria Evgenievna</h1>
-      <p>Group: P3122 | Variant: 476011</p>
+      <p>Group: P3222 | Variant: 57834</p>
     </header>
 
     <main>
@@ -28,20 +27,18 @@
                 <form id="coordinates-form" method="POST" action="${pageContext.request.contextPath}/controller">
                   <div id="error-container" class="error-message"></div>
 <div class="form-group">
-    <label>Enter the X value:</label>
-    <div class="button-group">
-        <button type="button" class="x-button" value="-4">-4</button>
-        <button type="button" class="x-button" value="-3">-3</button>
-        <button type="button" class="x-button" value="-2">-2</button>
-        <button type="button" class="x-button" value="-1">-1</button>
-        <button type="button" class="x-button" value="0">0</button>
-        <button type="button" class="x-button" value="1">1</button>
-        <button type="button" class="x-button" value="2">2</button>
-        <button type="button" class="x-button" value="3">3</button>
-        <button type="button" class="x-button" value="4">4</button>
+    <label>Select X value(s):</label>
+    <div class="checkbox-group"> 
+        <label><input type="checkbox" name="x" value="-4"> -4</label>
+        <label><input type="checkbox" name="x" value="-3"> -3</label>
+        <label><input type="checkbox" name="x" value="-2"> -2</label>
+        <label><input type="checkbox" name="x" value="-1"> -1</label>
+        <label><input type="checkbox" name="x" value="0"> 0</label>
+        <label><input type="checkbox" name="x" value="1"> 1</label>
+        <label><input type="checkbox" name="x" value="2"> 2</label>
+        <label><input type="checkbox" name="x" value="3"> 3</label>
+        <label><input type="checkbox" name="x" value="4"> 4</label>
     </div>
-
-    <input type="hidden" id="x-value" name="x" />
 </div>
                   <div class="form-group">
                     <label>Enter the Y value:</label>
@@ -86,6 +83,7 @@
                     <th>R</th>
                     <th>Result</th>
                     <th>Current Time</th>
+                    <th>Script Execution Time (ms)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -96,6 +94,7 @@
                             <td><c:out value="${result.r}"/></td>
                             <td>${result.hit ? "Hit" : "Miss"}</td>
                             <td><c:out value="${result.formattedTimestamp}"/></td>
+                            <td><c:out value="${result.executionTime}"/></td>
                         </tr>
                     </c:forEach>
                 </tbody>

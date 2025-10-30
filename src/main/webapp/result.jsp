@@ -15,34 +15,34 @@
 
     <main>
         <div class="container-main">
-            <h2>Your Check Result</h2>
-
-            <table class="param-table">
+            <h2>Результаты последней проверки:</h2>
+            
+            <%-- Используем ТОЧНО ТАКУЮ ЖЕ таблицу и стили, как на главной странице --%>
+            <table class="results-table">
+                <thead>
+                  <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>R</th>
+                    <th>Result</th>
+                    <th>Current Time</th>
+                    <th>Script Execution Time (ms)</th>
+                  </tr>
+                </thead>
                 <tbody>
-                    <tr>
-                        <td>X:</td>
-                        <td><c:out value="${requestScope.currentResult.x}"/></td>
-                    </tr>
-                    <tr>
-                        <td>Y:</td>
-                        <td><c:out value="${requestScope.currentResult.y}"/></td>
-                    </tr>
-                    <tr>
-                        <td>R:</td>
-                        <td><c:out value="${requestScope.currentResult.r}"/></td>
-                    </tr>
+                    <%-- ГЛАВНОЕ ИЗМЕНЕНИЕ: Итерируемся по списку 'newResults' из requestScope --%>
+                    <c:forEach items="${requestScope.newResults}" var="result">
+                        <tr class="${result.hit ? 'hit-true' : 'hit-false'}">
+                            <td><c:out value="${result.x}"/></td>
+                            <td><c:out value="${result.y}"/></td>
+                            <td><c:out value="${result.r}"/></td>
+                            <td>${result.hit ? "Hit" : "Miss"}</td>
+                            <td><c:out value="${result.formattedTimestamp}"/></td>
+                            <td><c:out value="${result.executionTime}"/></td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
-            <div class="result-message ${requestScope.currentResult.hit ? 'result-hit' : 'result-miss'}">
-                <c:choose>
-                    <c:when test="${requestScope.currentResult.hit}">
-                        Hit!
-                    </c:when>
-                    <c:otherwise>
-                        Miss!
-                    </c:otherwise>
-                </c:choose>
-            </div>
 
             <div class="back-link-container">
                 <a class="back-link" href="${pageContext.request.contextPath}/">Back to Main Page</a>

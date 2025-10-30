@@ -11,32 +11,57 @@ import ru.itmo.sludnaya.model.PointCheckResult;
 import ru.itmo.sludnaya.model.ResultsHistory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name="AreaCheckServlet", value = "/check")
 public class AreaCheckServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String xStr = req.getParameter("x");
+        long startTime = System.nanoTime();
+
+        String[] xStrArray = req.getParameterValues("x");
         String yStr = req.getParameter("y");
         String rStr = req.getParameter("r");
 
+        ServletContext context = getServletContext();
+        ResultsHistory history = (ResultsHistory) context.getAttribute("resultsHistory");
+        if (history == null) {
+            history = new ResultsHistory();
+        }
+
+        // 1. ИЗМЕНЕНИЕ: Создаем временный список для "новых" результатов
+        List<PointCheckResult> newResults = new ArrayList<>();
+
         try {
-            double x = Double.parseDouble(xStr.replace(',', '.'));
+            if (xStrArray == null || yStr == null || rStr == null || xStrArray.length == 0) {
+                throw new IllegalArgumentException("Отсутствуют необходимые параметры.");
+            }
+
             double y = Double.parseDouble(yStr.replace(',', '.'));
             double r = Double.parseDouble(rStr.replace(',', '.'));
-            boolean hit = checkHit(x,y,r);
-            PointCheckResult resultBean = new PointCheckResult(x,y,r,hit);
-            req.setAttribute("currentResult", resultBean);
 
+            for (String xStr : xStrArray) {
+                double x = Double.parseDouble(xStr.replace(',', '.'));
+                boolean hit = checkHit(x, y, r);
+                PointCheckResult resultBean = new PointCheckResult(x, y, r, hit);
 
-            ServletContext context = getServletContext();
-            ResultsHistory history =(ResultsHistory)  context.getAttribute("resultsHistory");
-            if(history == null) {
-                history = new ResultsHistory();
+                long endTime = System.nanoTime();
+                double executionTime = (endTime - startTime) / 1_000_000.0;
+                resultBean.setExecutionTime(executionTime);
+
+                history.add(resultBean);
+                newResults.add(0,resultBean);
+
+                startTime = System.nanoTime();
             }
-            history.add(resultBean);
+
             context.setAttribute("resultsHistory", history);
 
+            // 3. ИЗМЕНЕНИЕ: Кладем в request именно список НОВЫХ результатов
+            req.setAttribute("newResults", newResults);
+
+            // 4. ИЗМЕНЕНИЕ: Возвращаем forward на result.jsp
             getServletContext().getRequestDispatcher("/result.jsp").forward(req, resp);
 
         }

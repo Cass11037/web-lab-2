@@ -9,7 +9,14 @@ public class PointCheckResult {
     private  double r;
     private boolean hit;
     private LocalDateTime timestamp;
+    private double executionTime;
+    public double getExecutionTime() {
+        return executionTime;
+    }
 
+    public void setExecutionTime(double executionTime) {
+        this.executionTime = executionTime;
+    }
     public PointCheckResult(double x, double y, double r, boolean hit) {
         this.x = x;
         this.y = y;
