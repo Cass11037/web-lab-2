@@ -5,19 +5,18 @@
 <head>
     <meta charset="utf-8" />
     <title>Check Result</title>
-     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
 </head>
 <body>
     <header class="page-header">
         <h1 class="header-title">Sludnaya Victoria Evgenievna</h1>
-        <p>Group: P3122 | Variant: 476011</p>
+        <p>Group: P3222 | Variant: 57999</p>
     </header>
 
     <main>
         <div class="container-main">
-            <h2>Результаты последней проверки:</h2>
+            <h2>Last Check Results:</h2>
             
-            <%-- Используем ТОЧНО ТАКУЮ ЖЕ таблицу и стили, как на главной странице --%>
             <table class="results-table">
                 <thead>
                   <tr>
@@ -30,7 +29,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <%-- ГЛАВНОЕ ИЗМЕНЕНИЕ: Итерируемся по списку 'newResults' из requestScope --%>
                     <c:forEach items="${requestScope.newResults}" var="result">
                         <tr class="${result.hit ? 'hit-true' : 'hit-false'}">
                             <td><c:out value="${result.x}"/></td>

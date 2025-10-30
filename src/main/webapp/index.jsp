@@ -4,13 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <title>Client-Server Application | Lab Work 1</title>
-    <!--  <link rel="stylesheet" href="style.css" /> -->
      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
   </head>
   <body>
     <header class="page-header">
       <h1 class="header-title">Sludnaya Victoria Evgenievna</h1>
-      <p>Group: P3222 | Variant: 57834</p>
+      <p>Group: P3222 | Variant: 57999</p>
     </header>
 
     <main>
@@ -46,7 +45,7 @@
                       type="text"
                       id="y-value"
                       name="y"
-                      placeholder="in range -5 to 5"
+                      placeholder="in range -5 to 3"
                       required
                     />
                   </div>

@@ -1,6 +1,5 @@
 package ru.itmo.sludnaya.controller;
 
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,12 +29,11 @@ public class AreaCheckServlet extends HttpServlet {
             history = new ResultsHistory();
         }
 
-        // 1. ИЗМЕНЕНИЕ: Создаем временный список для "новых" результатов
         List<PointCheckResult> newResults = new ArrayList<>();
 
         try {
             if (xStrArray == null || yStr == null || rStr == null || xStrArray.length == 0) {
-                throw new IllegalArgumentException("Отсутствуют необходимые параметры.");
+                throw new IllegalArgumentException("Required parameters are missing.");
             }
 
             double y = Double.parseDouble(yStr.replace(',', '.'));
@@ -51,24 +49,20 @@ public class AreaCheckServlet extends HttpServlet {
                 resultBean.setExecutionTime(executionTime);
 
                 history.add(resultBean);
-                newResults.add(0,resultBean);
+                newResults.add(0, resultBean);
 
                 startTime = System.nanoTime();
             }
 
             context.setAttribute("resultsHistory", history);
-
-            // 3. ИЗМЕНЕНИЕ: Кладем в request именно список НОВЫХ результатов
             req.setAttribute("newResults", newResults);
-
-            // 4. ИЗМЕНЕНИЕ: Возвращаем forward на result.jsp
             getServletContext().getRequestDispatcher("/result.jsp").forward(req, resp);
 
-        }
-        catch (NumberFormatException | NullPointerException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error: all or any param arent correct");
+        } catch ( IllegalArgumentException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Error: Invalid or missing parameters.");
         }
     }
+
     private boolean checkHit(double x, double y, double r) {
         if (x >= 0 && y >= 0 && x <= r && y <= r / 2) {
             return true;

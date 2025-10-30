@@ -1,105 +1,42 @@
+html,
 body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  background-color: #f0f0f0; /* Оставляем общий фон чуть серым для контраста */
-  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+    Arial, sans-serif;
   font-size: 16px;
+  color: #333;
 }
+
+main {
+  flex-grow: 1;
+}
+
 .page-header {
-  background-color: rgb(20, 48, 48); /* Новый темно-зеленый */
+  background-color: rgb(20, 48, 48);
   color: #ffffff;
-  padding: 1.25rem;
+  padding: 1rem;
   text-align: center;
-}
-.page-header a {
-  color: #ffffff;
+  border-bottom: 4px solid rgb(144, 29, 49);
 }
 
 .header-title {
-  font-family: cursive, sans-serif;
+  font-family: "Georgia", serif;
+  font-size: 2.5rem;
   margin: 0;
+  font-weight: 400;
 }
 
 .page-header p {
   margin-top: 0.3125rem;
-}
-
-.layout-table {
-  width: 100%;
-  border-spacing: 20px;
-  padding: 2rem 4%;
-}
-
-.container-left,
-.container-right {
-  width: 50%;
-  background-color: rgb(244, 244, 244); /* Новый светло-серый фон */
-  border: 2px dashed rgb(192, 196, 196); /* Новая серая рамка */
-  padding: 1.25rem;
-  vertical-align: top;
-}
-
-.container-left h2,
-.container-right h2 {
-  color: rgb(20, 48, 48); /* Заголовки в цвет шапки */
-  margin-top: 0;
-}
-.container-left h2::before,
-.container-right h2::before {
-  content: "► ";
-  color: rgb(144, 29, 49); /* ► в бордовом цвете */
-}
-.results-table {
-  width: 100%;
-  border: none;
-  margin-bottom: 1.25rem;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.results-table thead th {
-  font-weight: bold;
-  text-align: left;
-  border: none;
-  padding: 0.625rem 1rem;
-  background: rgb(131, 74, 84);
-  color: rgb(20, 48, 48);
-  font-size: 0.875rem;
-}
-
-.results-table tr th:first-child,
-.results-table tr td:first-child {
-  border-radius: 0.5rem 0 0 0.5rem;
-}
-
-.results-table tr th:last-child,
-.results-table tr td:last-child {
-  border-radius: 0 0.5rem 0.5rem 0;
-}
-
-.results-table tbody td {
-  text-align: left;
-  border: none;
-  padding: 0.625rem 1rem;
-  font-size: 0.875rem;
-  vertical-align: top;
-}
-
-.results-table tbody tr:nth-child(even) {
-  background: #ffffff;
-}
-
-.results-table tr:hover td {
-  background-color: rgb(20, 48, 48);
-  opacity: 90%;
-  color: #f0f0f0;
-}
-
-.hit-true td {
-  background-color: rgba(60, 150, 90, 0.2);
-}
-
-.hit-false td {
-  background-color: rgba(220, 53, 69, 0.2);
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
 .page-footer {
@@ -107,9 +44,75 @@ body {
   color: white;
   padding: 1.25rem;
   text-align: center;
+  border-top: 4px solid rgb(131, 74, 84);
 }
-.page-footer p {
-  margin: 0;
+
+.layout-table {
+  width: 100%;
+  border-spacing: 20px;
+  padding: 2rem 4%;
+  box-sizing: border-box;
+}
+
+.container-left,
+.container-right {
+  width: 50%;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  vertical-align: top;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.container-left h2,
+.container-right h2 {
+  font-family: "Georgia", serif;
+  font-weight: 400;
+  font-size: 1.8rem;
+  color: rgb(20, 48, 48);
+  margin-top: 0;
+  border-bottom: 2px solid rgb(131, 74, 84);
+  padding-bottom: 0.5rem;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.25rem;
+}
+
+.results-table thead th {
+  font-weight: bold;
+  text-align: left;
+  padding: 0.8rem 1rem;
+  background: rgb(20, 48, 48);
+  color: white;
+}
+
+.results-table tbody td {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.results-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.results-table tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.results-table tr:hover td {
+  background-color: rgba(131, 74, 84, 0.2);
+}
+
+.hit-true {
+  background-color: rgba(60, 150, 90, 0.1) !important;
+}
+.hit-false {
+  background-color: rgba(220, 53, 69, 0.1) !important;
 }
 
 .form-container {
@@ -118,66 +121,92 @@ body {
   align-items: center;
   width: 100%;
 }
+
 .form-group {
-  margin-bottom: 4%;
+  margin-bottom: 1.5rem;
   width: 100%;
 }
+
 .form-group label {
   display: block;
-  margin-bottom: 2%;
+  margin-bottom: 0.5rem;
   font-weight: bold;
   color: #333;
 }
+
 .form-group input[type="text"],
 .form-group select {
-  width: 95%;
-  padding: 0.625rem;
+  width: 100%;
+  padding: 0.75rem;
   border: 1px solid rgb(192, 196, 196);
-  border-radius: 0.3125rem;
+  border-radius: 5px;
   font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box;
 }
+
+.submit-button,
+.reset-button {
+  width: 100%;
+  padding: 0.8rem;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
 .submit-button {
   background-color: rgb(144, 29, 49);
 }
 .submit-button:hover {
   background-color: rgb(174, 39, 59);
 }
-.submit-button,
 .reset-button {
-  width: 100%;
-  padding: 0.75rem;
-  color: white;
-  border: none;
-  border-radius: 0.3125rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-.reset-button {
-  background-color: rgb(200, 119, 132);
+  background-color: rgb(131, 74, 84);
 }
 .reset-button:hover {
-  background-color: rgb(218, 157, 167);
+  background-color: rgb(150, 90, 100);
 }
 
-.button-group {
+.checkbox-group {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.x-button {
+.checkbox-group label {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-group input[type="checkbox"] + span {
+  display: inline-block;
   padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
   cursor: pointer;
   font-size: 0.9rem;
+  transition: all 0.2s;
 }
 
-.x-button.selected {
+.checkbox-group input[type="checkbox"]:hover + span {
+  border-color: rgb(20, 48, 48);
+  color: rgb(20, 48, 48);
+}
+
+.checkbox-group input[type="checkbox"]:checked + span {
   background-color: rgb(20, 48, 48);
   color: white;
   border-color: rgb(20, 48, 48);
+  font-weight: bold;
 }
 
 .error-message {
@@ -197,89 +226,32 @@ body {
   justify-content: center;
 }
 
-#graph .graph-area {
-  fill: rgb(194, 255, 219);
-  stroke: rgb(255, 142, 161);
-  stroke-width: 2;
-  fill-opacity: 0.7;
-}
-
-#graph .axis line,
-#graph .axis polygon {
-  stroke: #333;
-  stroke-width: 2;
-}
-
-#graph .axis text {
-  fill: #333;
-  font-family: sans-serif;
-  font-size: 10px;
-}
-
-#graph .axis-ticks line {
-  stroke: #666;
-  stroke-width: 1;
-}
-
-#graph .axis-ticks text {
-  fill: #666;
-  font-family: sans-serif;
-  font-size: 8px;
-  text-anchor: middle;
-}
-
 .container-main {
-  width: 60%;
+  width: 80%;
+  max-width: 960px;
   margin: 2rem auto;
-  background-color: rgb(244, 244, 244);
-  border: 2px dashed rgb(192, 196, 196);
-  padding: 1.25rem 2rem;
-  vertical-align: top;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
+
 .container-main h2 {
+  font-family: "Georgia", serif;
+  font-weight: 400;
+  font-size: 1.8rem;
   color: rgb(20, 48, 48);
   margin-top: 0;
+  border-bottom: 2px solid rgb(131, 74, 84);
+  padding-bottom: 0.5rem;
 }
-.container-main h2::before {
-  content: "► ";
-  color: rgb(144, 29, 49);
-}
-.param-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-.param-table td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-.param-table td:first-child {
-  font-weight: bold;
-  color: #333;
-  width: 100px;
-}
-.result-message {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-.result-hit {
-  color: #155724;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-}
-.result-miss {
-  color: #721c24;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-}
+
 .back-link-container {
   text-align: center;
   margin-top: 20px;
 }
+
 .back-link {
   display: inline-block;
   padding: 10px 20px;
@@ -289,40 +261,7 @@ body {
   border-radius: 5px;
   transition: background-color 0.3s;
 }
+
 .back-link:hover {
   background-color: rgb(174, 39, 59);
-}
-.checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.checkbox-group label {
-  display: inline-block; /* <-- Важно */
-  margin-bottom: 0; /* <-- Убираем лишний отступ */
-}
-.checkbox-group input[type="checkbox"] {
-  display: none; /* <-- Прячем настоящий чекбокс */
-}
-.checkbox-group input[type="checkbox"] + span {
-  /* Стиль для текста рядом с чекбоксом (наша "кнопка") */
-  display: inline-block;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-.checkbox-group input[type="checkbox"]:hover + span {
-  border-color: rgb(20, 48, 48);
-  color: rgb(20, 48, 48);
-}
-.checkbox-group input[type="checkbox"]:checked + span {
-  /* Стиль для ВЫБРАННОЙ "кнопки" */
-  background-color: rgb(20, 48, 48);
-  color: white;
-  border-color: rgb(20, 48, 48);
-  font-weight: bold;
 }
