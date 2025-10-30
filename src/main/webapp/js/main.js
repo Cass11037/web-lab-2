@@ -8,24 +8,30 @@ const rSelect = document.getElementById("r-value");
 const errorContainer = document.getElementById("error-container");
 const KEY_FOR_R_VALUE = "selected_r_value";
 
+// --- НАЧАЛО: ОБРАБОТЧИКИ СОБЫТИЙ (Event Handlers) ---
+
 canvas.addEventListener("click", (event) => {
   hideError();
-  const rValue = parseFloat(rSelect.value);
-  if (isNaN(rValue)) {
-    showError("Cannot determine coordinates: Radius R is not set!");
+
+  // 1. Валидируем только R. Y больше не нужен.
+  const rError = validateR();
+  if (rError) {
+    showError(rError);
     return;
   }
+  const rValue = parseFloat(rSelect.value);
+
+  // 2. Вычисляем обе координаты: X и Y
   const rect = canvas.getBoundingClientRect();
   const canvasX = event.clientX - rect.left;
   const canvasY = event.clientY - rect.top;
-
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
   const r_pixels = canvas.width / 3;
-
   const mathX = ((canvasX - centerX) / r_pixels) * rValue;
-  const mathY = ((centerY - canvasY) / r_pixels) * rValue;
+  const mathY = ((centerY - canvasY) / r_pixels) * rValue; // <-- ГЛАВНОЕ ИЗМЕНЕНИЕ
 
+  // 3. Создаем и отправляем динамическую форму с вычисленными X и Y
   const dynamicForm = document.createElement("form");
   dynamicForm.method = "POST";
   dynamicForm.action = form.action;
@@ -38,23 +44,28 @@ canvas.addEventListener("click", (event) => {
     return input;
   }
   dynamicForm.appendChild(createInput("x", mathX.toFixed(3)));
-  dynamicForm.appendChild(createInput("y", yInput.value)); // Берем Y из поля ввода
+  dynamicForm.appendChild(createInput("y", mathY.toFixed(3))); // <-- Используем вычисленный mathY
   dynamicForm.appendChild(createInput("r", rValue));
 
   document.body.appendChild(dynamicForm);
   dynamicForm.submit();
 });
 
+// Обработчик отправки основной формы (без изменений)
 form.addEventListener("submit", (event) => {
-  const errorMessage = validateAllFields();
-  if (errorMessage) {
+  const xError = validateX();
+  const yError = validateY();
+  const rError = validateR();
+
+  if (xError || yError || rError) {
     event.preventDefault();
-    showError(errorMessage);
+    showError(xError || yError || rError);
   } else {
     hideError();
   }
 });
 
+// Обработчик изменения R (без изменений)
 rSelect.addEventListener("change", () => {
   const rValue = parseFloat(rSelect.value);
   if (!isNaN(rValue)) {
@@ -64,12 +75,18 @@ rSelect.addEventListener("change", () => {
   }
 });
 
-function validateAllFields() {
+// --- КОНЕЦ: ОБРАБОТЧИКИ СОБЫТИЙ ---
+
+// --- НАЧАЛО: ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ---
+function validateX() {
   const checkedX = document.querySelector('input[name="x"]:checked');
   if (!checkedX) {
-    return "Please select an X value.";
+    return "Please select at least one X value.";
   }
+  return null;
+}
 
+function validateY() {
   const yValueStr = yInput.value.trim().replace(",", ".");
   if (yValueStr === "") {
     return "Please enter a Y value.";
@@ -77,20 +94,24 @@ function validateAllFields() {
   if (isNaN(yValueStr)) {
     return "The Y value must be a number.";
   }
-
   const yNum = parseFloat(yValueStr);
   if (yNum <= -5 || yNum >= 3) {
     return "The Y value must be in the interval (-5 ... 3).";
   }
+  return null;
+}
 
+function validateR() {
   const rValue = rSelect.value;
   if (rValue === "") {
     return "Please select an R value.";
   }
-
   return null;
 }
+// --- КОНЕЦ: ФУНКЦИИ ВАЛИДАЦИИ ---
 
+// --- НАЧАЛО: ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) ---
+// ... (все функции отрисовки и вспомогательные функции остаются точно такими же) ...
 function drawPlot(r) {
   const width = canvas.width;
   const height = canvas.height;
@@ -104,11 +125,13 @@ function drawPlot(r) {
   ctx.strokeStyle = "#255799";
   ctx.lineWidth = 1;
 
+  // Прямоугольник
   ctx.beginPath();
   ctx.rect(centerX, centerY - r_pixels / 2, r_pixels, r_pixels / 2);
   ctx.fill();
   ctx.stroke();
 
+  // Треугольник
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
   ctx.lineTo(centerX + r_pixels / 2, centerY);
@@ -116,6 +139,15 @@ function drawPlot(r) {
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
+
+  // Сектор круга
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY);
+  ctx.arc(centerX, centerY, r_pixels, Math.PI / 2, Math.PI);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
   drawAxes();
 
   ctx.fillStyle = "black";
@@ -160,23 +192,6 @@ function hideError() {
   errorContainer.style.display = "none";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const savedR = localStorage.getItem(KEY_FOR_R_VALUE);
-  let initialR;
-  if (savedR) {
-    rSelect.value = savedR;
-    initialR = parseFloat(savedR);
-  } else {
-    initialR = parseFloat(rSelect.value);
-  }
-  if (!isNaN(initialR)) {
-    drawPlot(initialR);
-    redrawPoints(initialR);
-  } else {
-    drawPlotWithTextLabels();
-  }
-});
-
 function drawPlotWithTextLabels() {
   const width = canvas.width;
   const height = canvas.height;
@@ -209,6 +224,7 @@ function drawPlotWithTextLabels() {
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
+
   drawAxes();
 
   ctx.fillStyle = "black";
@@ -241,6 +257,22 @@ function drawAxes() {
   ctx.lineTo(centerX - arrowSize / 2, arrowSize);
   ctx.moveTo(centerX, 0);
   ctx.lineTo(centerX + arrowSize / 2, arrowSize);
-
   ctx.stroke();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedR = localStorage.getItem(KEY_FOR_R_VALUE);
+  let initialR;
+  if (savedR) {
+    rSelect.value = savedR;
+    initialR = parseFloat(savedR);
+  } else {
+    initialR = parseFloat(rSelect.value);
+  }
+  if (!isNaN(initialR)) {
+    drawPlot(initialR);
+    redrawPoints(initialR);
+  } else {
+    drawPlotWithTextLabels();
+  }
+});

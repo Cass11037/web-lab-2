@@ -28,16 +28,16 @@
                   <div id="error-container" class="error-message"></div>
 <div class="form-group">
     <label>Select X value(s):</label>
-    <div class="checkbox-group"> 
-        <label><input type="checkbox" name="x" value="-4"> -4</label>
-        <label><input type="checkbox" name="x" value="-3"> -3</label>
-        <label><input type="checkbox" name="x" value="-2"> -2</label>
-        <label><input type="checkbox" name="x" value="-1"> -1</label>
-        <label><input type="checkbox" name="x" value="0"> 0</label>
-        <label><input type="checkbox" name="x" value="1"> 1</label>
-        <label><input type="checkbox" name="x" value="2"> 2</label>
-        <label><input type="checkbox" name="x" value="3"> 3</label>
-        <label><input type="checkbox" name="x" value="4"> 4</label>
+    <div class="checkbox-group">
+        <label><input type="checkbox" name="x" value="-4"><span>-4</span></label>
+        <label><input type="checkbox" name="x" value="-3"><span>-3</span></label>
+        <label><input type="checkbox" name="x" value="-2"><span>-2</span></label>
+        <label><input type="checkbox" name="x" value="-1"><span>-1</span></label>
+        <label><input type="checkbox" name="x" value="0"><span>0</span></label>
+        <label><input type="checkbox" name="x" value="1"><span>1</span></label>
+        <label><input type="checkbox" name="x" value="2"><span>2</span></label>
+        <label><input type="checkbox" name="x" value="3"><span>3</span></label>
+        <label><input type="checkbox" name="x" value="4"><span>4</span></label>
     </div>
 </div>
                   <div class="form-group">
