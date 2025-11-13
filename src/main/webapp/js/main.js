@@ -8,20 +8,14 @@ const rSelect = document.getElementById("r-value");
 const errorContainer = document.getElementById("error-container");
 const KEY_FOR_R_VALUE = "selected_r_value";
 
-// --- НАЧАЛО: ОБРАБОТЧИКИ СОБЫТИЙ (Event Handlers) ---
-
 canvas.addEventListener("click", (event) => {
   hideError();
-
-  // 1. Валидируем только R. Y больше не нужен.
   const rError = validateR();
   if (rError) {
     showError(rError);
     return;
   }
   const rValue = parseFloat(rSelect.value);
-
-  // 2. Вычисляем обе координаты: X и Y
   const rect = canvas.getBoundingClientRect();
   const canvasX = event.clientX - rect.left;
   const canvasY = event.clientY - rect.top;
@@ -29,9 +23,7 @@ canvas.addEventListener("click", (event) => {
   const centerY = canvas.height / 2;
   const r_pixels = canvas.width / 3;
   const mathX = ((canvasX - centerX) / r_pixels) * rValue;
-  const mathY = ((centerY - canvasY) / r_pixels) * rValue; // <-- ГЛАВНОЕ ИЗМЕНЕНИЕ
-
-  // 3. Создаем и отправляем динамическую форму с вычисленными X и Y
+  const mathY = ((centerY - canvasY) / r_pixels) * rValue;
   const dynamicForm = document.createElement("form");
   dynamicForm.method = "POST";
   dynamicForm.action = form.action;
@@ -44,14 +36,14 @@ canvas.addEventListener("click", (event) => {
     return input;
   }
   dynamicForm.appendChild(createInput("x", mathX.toFixed(3)));
-  dynamicForm.appendChild(createInput("y", mathY.toFixed(3))); // <-- Используем вычисленный mathY
+  dynamicForm.appendChild(createInput("y", mathY.toFixed(3))); 
   dynamicForm.appendChild(createInput("r", rValue));
 
   document.body.appendChild(dynamicForm);
   dynamicForm.submit();
 });
 
-// Обработчик отправки основной формы (без изменений)
+
 form.addEventListener("submit", (event) => {
   const xError = validateX();
   const yError = validateY();
@@ -65,7 +57,6 @@ form.addEventListener("submit", (event) => {
   }
 });
 
-// Обработчик изменения R (без изменений)
 rSelect.addEventListener("change", () => {
   const rValue = parseFloat(rSelect.value);
   if (!isNaN(rValue)) {
@@ -75,9 +66,7 @@ rSelect.addEventListener("change", () => {
   }
 });
 
-// --- КОНЕЦ: ОБРАБОТЧИКИ СОБЫТИЙ ---
 
-// --- НАЧАЛО: ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ---
 function validateX() {
   const checkedX = document.querySelector('input[name="x"]:checked');
   if (!checkedX) {
@@ -108,10 +97,6 @@ function validateR() {
   }
   return null;
 }
-// --- КОНЕЦ: ФУНКЦИИ ВАЛИДАЦИИ ---
-
-// --- НАЧАЛО: ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) ---
-// ... (все функции отрисовки и вспомогательные функции остаются точно такими же) ...
 function drawPlot(r) {
   const width = canvas.width;
   const height = canvas.height;
@@ -125,13 +110,11 @@ function drawPlot(r) {
   ctx.strokeStyle = "#255799";
   ctx.lineWidth = 1;
 
-  // Прямоугольник
   ctx.beginPath();
   ctx.rect(centerX, centerY - r_pixels / 2, r_pixels, r_pixels / 2);
   ctx.fill();
   ctx.stroke();
 
-  // Треугольник
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
   ctx.lineTo(centerX + r_pixels / 2, centerY);
@@ -140,7 +123,6 @@ function drawPlot(r) {
   ctx.fill();
   ctx.stroke();
 
-  // Сектор круга
   ctx.beginPath();
   ctx.moveTo(centerX, centerY);
   ctx.arc(centerX, centerY, r_pixels, Math.PI / 2, Math.PI);

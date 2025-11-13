@@ -17,21 +17,16 @@ import java.util.List;
 public class AreaCheckServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long startTime = System.nanoTime();
 
         String[] xStrArray = req.getParameterValues("x");
         String yStr = req.getParameter("y");
         String rStr = req.getParameter("r");
 
-        ServletContext context = getServletContext();
-        ResultsHistory history = (ResultsHistory) context.getAttribute("resultsHistory");
-        if (history == null) {
-            history = new ResultsHistory();
-        }
-
         List<PointCheckResult> newResults = new ArrayList<>();
 
         try {
+            long startTime = System.nanoTime();
+
             if (xStrArray == null || yStr == null || rStr == null || xStrArray.length == 0) {
                 throw new IllegalArgumentException("Required parameters are missing.");
             }
@@ -47,14 +42,21 @@ public class AreaCheckServlet extends HttpServlet {
                 long endTime = System.nanoTime();
                 double executionTime = (endTime - startTime) / 1_000_000.0;
                 resultBean.setExecutionTime(executionTime);
-
-                history.add(resultBean);
                 newResults.add(0, resultBean);
 
                 startTime = System.nanoTime();
             }
-
-            context.setAttribute("resultsHistory", history);
+            ServletContext context = getServletContext();
+            synchronized (context) {
+                ResultsHistory history = (ResultsHistory) context.getAttribute("resultsHistory");
+                if (history == null) {
+                    history = new ResultsHistory();
+                }
+                for (PointCheckResult result : newResults) {
+                    history.add(result);
+                }
+                context.setAttribute("resultsHistory", history);
+            }
             req.setAttribute("newResults", newResults);
             getServletContext().getRequestDispatcher("/result.jsp").forward(req, resp);
 
